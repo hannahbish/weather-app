@@ -1,14 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-
-function Square(props) {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
-}
+import Footer from './components/Footer.jsx';
+import './css/index.css';
 
 class WeatherSearch extends React.Component {
   constructor(props) {
@@ -17,10 +10,12 @@ class WeatherSearch extends React.Component {
     this.handleHover = this.handleHover.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      autoCompleteCities: '',
-      highlightedCity: '',
-      selectedCityLL: '',
-      forecast: ''
+      autoCompleteCities: '', // the list of autocomplete cities returned from API
+      inputCity: '', // the city string inputted by the user
+      highlightedCity: '', // the city that is being hovered
+      selectedCityLL: '', // the langitude-longitude the city selected by the user
+      selectedCityName: '', // the name of the city selected by the user
+      forecast: '' // the list of forecast for the selected city
     };
   }
 
@@ -37,8 +32,9 @@ class WeatherSearch extends React.Component {
   };
 
   callForecastApi = async () => {
-    const ll = this.state.selectedCityLL.split(' ').join(',');
-    console.log(ll);
+    const { selectedCityLL } = this.state;
+    console.log(selectedCityLL);
+    const ll = selectedCityLL.split(' ').join(',');
     const response = await fetch('/forecast/' + ll);
     const body = await response.json();
 
@@ -47,7 +43,6 @@ class WeatherSearch extends React.Component {
     }
 
     let result = body && body.forecast && JSON.parse(body.forecast);
-    console.log(result);
     
     if (result.response.error && result.response.error.description) {
       return result.error.description;
@@ -61,7 +56,9 @@ class WeatherSearch extends React.Component {
   };
 
   handleChange(e) {
-    this.callAutocompleteApi(e.target.value)
+    const inputCity = e.target.value;
+    this.setState({ inputCity, selectedCityName: '' });
+    this.callAutocompleteApi(inputCity)
         .then(res => this.setState({ autoCompleteCities: res }))
         .catch(err => console.log(err));
   }
@@ -81,10 +78,12 @@ class WeatherSearch extends React.Component {
   }
 
   handleClick(e) {
-    const targetLL = e.target.dataset.ll;
-    console.log(this.state.autoCompleteCities);
+    const cityLL = e.target.dataset.ll;
+    const cityName = e.target.innerText;
+    console.log(cityName);
     this.setState({
-      selectedCityLL: targetLL,
+      selectedCityLL: cityLL,
+      selectedCityName: cityName,
       autoCompleteCities: null
     }, () => {
       this.callForecastApi()
@@ -93,20 +92,13 @@ class WeatherSearch extends React.Component {
     });
   }
 
-  renderSquare(i) {
-    return (
-      <Square
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
-      />
-    );
-  }
-
   render() {
     const {
       autoCompleteCities,
       highlightedCity,
-      forecast
+      forecast,
+      selectedCityName,
+      inputCity
     } = this.state;
     let cities;
     let forecasts;
@@ -131,10 +123,15 @@ class WeatherSearch extends React.Component {
     if (forecast) {
       forecasts = forecast.map((fc) => {
         return (
-          <div
+          <div className="forecast-grid"
             key={fc.period}
           >
-            {`${fc.title}: ${fc.fcttext}`}
+            <div className='forecast-grid-header'>
+              {fc.title}
+            </div>
+            <div className="forecast-grid-cell">
+              {fc.fcttext}
+            </div>
           </div>
         );
       });
@@ -142,17 +139,22 @@ class WeatherSearch extends React.Component {
     
 
     return (
-      <div className="autocomplete">
-        <input type="text" onChange={this.handleChange} />
-        {
-          autoCompleteCities &&
-          <div className="menu">
-            { cities }
+      <div>
+        <div className="autocomplete">
+          <input type="text" value={selectedCityName || inputCity} onChange={this.handleChange} />
+          {
+            autoCompleteCities &&
+            <div className="menu">
+              { cities }
+            </div>
+          }
+        </div>
+        { forecasts && 
+          <div className="forecast-grid-wrapper">
+            { forecasts }
           </div>
         }
-        <div>
-          { forecasts }
-        </div>
+        <Footer />
       </div>
     );
   }

@@ -1,0 +1,71 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+  background-color: #def0ff;
+}
+
+.menu {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  background: white;
+  border: 1px solid #cccccc;
+  z-index: 1000
+}
+
+.item {
+  padding: 2px 6px;
+  cursor: default;
+}
+
+.item-highlighted {
+  color: white;
+  background-color: #4095bf;
+}
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete input {
+  height: 20px;
+  width: 400px;
+}
+
+footer {
+  padding: 20px 0 40px;
+  margin-top: 35px;
+  clear: both;
+  font-size: 12px;
+  color: #9a9994;
+  border-top: solid 1px #d8d7cf;
+}
+
+.forecast-grid-wrapper {
+  position: relative;
+  height: 250px;
+  margin-top: 40px;
+}
+
+.forecast-grid {
+  width: 8.33%;
+  margin: 0;
+  border-right: 1px solid grey;
+  height: 100%;
+  float: left;
+  background-color: white;
+}
+
+.forecast-grid-header {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.forecast-grid-cell {
+  margin-top: 30px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+

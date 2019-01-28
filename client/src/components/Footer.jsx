@@ -11,6 +11,7 @@ class Footer extends React.Component {
           <img
             src={wundergroundLogo}
             style={{ height: 50 }}
+            alt='The Weather Underground'
           />
         </p>
       </div>

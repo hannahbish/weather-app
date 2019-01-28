@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 class Forecast extends React.Component {
   render() {
     const { forecastList } = this.props;
-    console.log(forecastList);
+
     return (
       <div className="forecast-grid-wrapper">
-        { forecastList && forecastList.length &&
+        { forecastList &&
           forecastList.map((fc) => (
             <div
               className="forecast-grid"

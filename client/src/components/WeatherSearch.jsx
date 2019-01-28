@@ -10,12 +10,12 @@ class WeatherSearch extends React.Component {
     this.handleDropdownHover = this.handleDropdownHover.bind(this);
     this.handleDropdownClick = this.handleDropdownClick.bind(this);
     this.state = {
-      autoCompleteCities: '', // the list of autocomplete cities returned from API
+      autoCompleteCities: [], // the list of autocomplete cities returned from API
       inputCity: '', // the city string inputted by the user
       highlightedCity: '', // the city that is being hovered
-      selectedCityLL: '', // the langitude-longitude the city selected by the user
+      selectedCityLL: '', // the langitude-longitude of the city selected by the user
       selectedCityName: '', // the name of the city selected by the user
-      forecast: '' // the list of forecast for the selected city
+      forecast: [] // the list of forecasts for the selected city
     };
   }
 

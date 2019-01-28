@@ -12,7 +12,7 @@ class CityDropdown extends React.Component {
 
     return (
       <div className="menu">
-        { cityList && cityList.length &&
+        { cityList &&
           cityList.map((city) => (
             <div
               className={`item ${highlightedCity === city.name ? 'item-highlighted' : ''}`}
